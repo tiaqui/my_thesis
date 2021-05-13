@@ -41,13 +41,19 @@ The core code is available in this other repo [RAMON](https://github.com/tiaqui/
     - storing the information in a tabular file (_.xlsx_ for example).
 
 ## Notebooks
-
-1. [**Inverse filtering design and implementation**](https://github.com/tiaqui/my_thesis/blob/master/notebooks/1.%20Inverse%20filter%20design%20and%20implementation.ipynb).
-
-[test](/notebooks/1.%20Inverse%20filter%20design%20and%20implementation.ipynb)
+1. [**Inverse filtering design and implementation**.](/notebooks/1.%20Inverse%20filter%20design%20and%20implementation.ipynb)
 
 ![Notebook 1](/img/notebook_1.png)
-![3D device model](/img/model.jpg)
+
+2. [**A, C and Z frequency weightings**.](/notebooks/2.%20A,%20C%20and%20Z%20frequency%20weightings.ipynb)
+
+3. [**Octave and one-third octave band filters**.](/notebooks/3.%20Octave%20and%20one-third%20octave%20iband%20filters.ipynb)
 
 ## Requirements
-* `sounddevice`.
+To run the notebooks you'll need the folowing packages:
+* `numpy`
+* `scipy`
+* `matplotlib`
+* `seaborn`
+* `IPython`
+* `ipywidgets`
