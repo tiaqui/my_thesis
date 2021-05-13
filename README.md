@@ -7,13 +7,13 @@ This thesis was developed to finally obtain my engineering degree at the [UNTREF
 
 What inspired this work was one of the main problems that many experience nowadays (mainly in big cities like BA, where I live): **noise**. The first step in taking action to reduce noise is to have precise objective measurements of it. Traditionally, this was done by professionals using sound level meters. In the present, there are devices (acoustic monitoring stations) that overcome the limitations of that process (mainly the time and space limitations in the measurements).
 
-This thesis objective is to **develop a low-cost device that allows acoustic noise measurements continuously, remotely and autonomously**. Since most of the similar alternatives in the market are cost-prohibitive, since they are usually manufactured with a portable and standard-compliant professional sound level meters.
+This thesis objective was to **develop a low-cost device that allows acoustic noise measurements continuously, remotely and autonomously**. Since most of the similar alternatives in the market are cost-prohibitive, since they are usually manufactured with a portable and standard-compliant professional sound level meters.
 
 ## Development
 The designed device uses a [Raspberry Pi 2 Model B](https://www.raspberrypi.org/products/raspberry-pi-2-model-b/) along with a [digital I2S MEMS microphone](https://www.adafruit.com/product/3421) to capture, process and measure the input sound. A customized housing for the microphone was built using a 3D printer, looking like this:
-![3D device model](/img/model.jpg).
+![3D device model](/img/model.jpg)
 
-For the audio processing the below block diagram was proposed, in which the focus was to adapt the regular processes that traditional analog sound level meters perform to a digital device. ![](missing image)
+For the audio processing the below block diagram was proposed, in which the focus was to adapt the regular processes that traditional analog sound level meters perform to a digital device. ![](_missing image_)
 
 In the notebooks included in this repo we will go over most of the functions and processes neccessary to have a functioning monitoring station.
 
@@ -41,4 +41,13 @@ The core code is available in this other repo [RAMON](https://github.com/tiaqui/
     - storing the information in a tabular file (_.xlsx_ for example).
 
 ## Notebooks
-1. **Inverse filtering design and implementation**. 
+
+1. [**Inverse filtering design and implementation**](https://github.com/tiaqui/my_thesis/blob/master/notebooks/1.%20Inverse%20filter%20design%20and%20implementation.ipynb).
+
+[test](/notebooks/1.%20Inverse%20filter%20design%20and%20implementation.ipynb)
+
+![Notebook 1](/img/notebook_1.png)
+![3D device model](/img/model.jpg)
+
+## Requirements
+* `sounddevice`.
