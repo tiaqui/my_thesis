@@ -4,7 +4,7 @@ in the core code developed for the acoustic monitoring station.
 """
 
 import numpy as np
-from scipy.signal import zpk2sos, sosfilt
+from scipy.signal import lfilter, sosfilt
 from scipy.signal.windows import flattop
 
 ## Constant definitions:
@@ -140,7 +140,11 @@ def gauss_f(freq, f0, Noct):
     # magnitude normalizaition
     return g/sum(g)
 
-## TODO: add inverse filtering function
+def inverse_filter(x):
+    """ Appyling the system's inverse filter, according to the
+    coefficients from the designed included on Notebook 1. """
+
+    return lfilter(H_inv, 1, x)
 
 def bilinear_zpk(z, p, k, fs=FS):
     """ Returns the zero-pole-gain system in the z-domain
@@ -167,5 +171,5 @@ def filt_A(x):
 
 def filt_C(x):
     """ Applies the C weighting filter to the input signal 'x' """
-    
+
     return sosfilt(sos_C, x)
