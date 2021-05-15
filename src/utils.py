@@ -1,13 +1,49 @@
 """
 Useful functions for the device operation, this file is based
-in the core code developed for the acoustic monitoring station
-and will be explained and used throughout the notebooks.
-
-In this file we will include:
-
-    - 
+in the core code developed for the acoustic monitoring station.
 """
 
+import numpy as np
+from scipy.signal import zpk2sos, sosfilt
+from scipy.signal.windows import flattop
+
+## Constant definitions:
+# - - - - - - - - - - - - - - - 
+
+# sampling frequency [Hz]
+FS = 44100
+# reference frequency [Hz]
+FR = 1000
+
+## A and C weighting:
+## zero-pole-gain system from IEC 61672
+
+# C weighting
+Z_C = np.array([0, 0])
+P_C = np.array([-2*np.pi*20.598997057568145, 
+                -2*np.pi*20.598997057568145,
+                -2*np.pi*12194.21714799801,
+                -2*np.pi*12194.21714799801])
+K_C = (10**(0.062/20))*P_C[3]**2
+
+# A weighting
+Z_A = np.append(Z_C, [0, 0])
+P_A = np.insert(P_C, 
+                [2, 2], 
+                [-2*np.pi*107.65264864304628, 
+                -2*np.pi*737.8622307362899])
+K_A = (10**(2/20))*P_A[4]**2
+
+
+## Loading coefficients:
+# - - - - - - - - - - - - - - - 
+
+H_inv = np.load('H_inv.npy')
+sos_A = np.load('sos_A.npy')
+sos_C = np.load('sos_C.npy')
+
+## Functions:
+# - - - - - - - - - - - - - - - 
 
 def spec(x, nfft=2**16, window='rect'):
     """ Compute the FFT spectrum of the input audio signal 'x'. 
@@ -103,3 +139,33 @@ def gauss_f(freq, f0, Noct):
 
     # magnitude normalizaition
     return g/sum(g)
+
+## TODO: add inverse filtering function
+
+def bilinear_zpk(z, p, k, fs=FS):
+    """ Returns the zero-pole-gain system in the z-domain
+    from the same system in the s-domain through the bilinear
+    transform. """
+
+    deg = len(p) - len(z)
+    fs2 = 2.0*fs
+
+    # Bilinear transform
+    z_b = (fs2 + z)/(fs2 - z)
+    p_b = (fs2 + p)/(fs2 - p)
+    z_b = np.append(z_b, -np.ones(deg))
+    k_b = k*np.real(np.prod(fs2 - z)/np.prod(fs2 - p))
+
+    return z_b, p_b, k_b
+
+
+def filt_A(x):
+    """ Applies the A weighting filter to the input signal 'x' """
+
+    return sosfilt(sos_A, x)
+
+
+def filt_C(x):
+    """ Applies the C weighting filter to the input signal 'x' """
+    
+    return sosfilt(sos_C, x)
