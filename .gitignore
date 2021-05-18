@@ -1,3 +1,5 @@
 Tesis/**
 notebooks/.ipynb_checkpoints/**
 notebooks/Untitled.ipynb
+utils.py
+src/__pycache__/**

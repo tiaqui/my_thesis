@@ -47,10 +47,12 @@ The core code is available in this other repo [RAMON](https://github.com/tiaqui/
 
 2. [**A, C and Z frequency weightings**.](/notebooks/2.%20A,%20C%20and%20Z%20frequency%20weightings.ipynb)
 
-3. [**Octave and one-third octave band filters**.](/notebooks/3.%20Octave%20and%20one-third%20octave%20iband%20filters.ipynb)
+![Notebook 2](/img/notebook_2.png)
+
+3. [**Octave and one-third octave band filters**.](/notebooks/3.%20Octave%20and%20one-third%20octave%20band%20filters.ipynb)
 
 ## Requirements
-To run the notebooks you'll need the folowing packages:
+To run the notebooks the folowing packages are required:
 * `numpy`
 * `scipy`
 * `matplotlib`

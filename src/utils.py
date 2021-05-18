@@ -3,9 +3,13 @@ Useful functions for the device operation, this file is based
 in the core code developed for the acoustic monitoring station.
 """
 
+import os
 import numpy as np
 from scipy.signal import lfilter, sosfilt
 from scipy.signal.windows import flattop
+
+# Current file directory
+DIR = os.path.dirname(os.path.realpath(__file__))
 
 ## Constant definitions:
 # - - - - - - - - - - - - - - - 
@@ -37,14 +41,14 @@ K_A = (10**(2/20))*P_A[4]**2
 ## Loading coefficients:
 # - - - - - - - - - - - - - - - 
 
-H_inv = np.load('H_inv.npy')
-sos_A = np.load('sos_A.npy')
-sos_C = np.load('sos_C.npy')
+H_inv = np.load(DIR + '\H_inv.npy')
+sos_A = np.load(DIR + '\sos_A.npy')
+sos_C = np.load(DIR + '\sos_C.npy')
 
 ## Functions:
 # - - - - - - - - - - - - - - - 
 
-def spec(x, nfft=2**16, fs=FS):
+def spec(x, nfft=2**12, fs=FS):
     """ Compute the FFT spectrum of the input audio signal 'x'. 
     The number of points for which to compute the FFT can be 
     specified by 'nfft'. Its possible to select a Hanning or Flattop
@@ -55,11 +59,11 @@ def spec(x, nfft=2**16, fs=FS):
     spp = np.abs(sp)/nfft
     return spp, freq
 
-def ref_f(x, f):
-    """ References the input signal 'x' at 1 kHz according
+def ref_f(X, f):
+    """ References the input signal 'X' at 1 kHz according
     to the frequency array 'f'. """
     idx = (np.abs(f-1000)).argmin()
-    return x-x[idx]
+    return X-X[idx]
 
 def fft_average(x, nfft=2**16):
     """ Receives a tuple or list of audio arrays 'x', calculates and 
@@ -67,7 +71,7 @@ def fft_average(x, nfft=2**16):
     With 'nfft' the number of FFT points can be modified. """
     X = np.empty([len(x), int(nfft/2+1)])
     xn = np.empty([len(x), int(nfft/2+1)])
-    y = np.empty(int(nfft/2)
+    y = np.empty(int(nfft/2))
     for i in range(len(x)):
         X[i,:], freq = spec(x[i], nfft=nfft)
         xn[i,:] = 1 + ref_f(X[i,:], freq)
