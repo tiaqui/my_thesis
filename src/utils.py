@@ -6,7 +6,7 @@ in the core code developed for the acoustic monitoring station.
 import os
 import numpy as np
 from scipy.signal import lfilter, sosfilt
-from scipy.signal.windows import flattop
+from scipy.signal import butter
 
 # Current file directory
 DIR = os.path.dirname(os.path.realpath(__file__))
@@ -46,14 +46,12 @@ sos_A = np.load(DIR + '\sos_A.npy')
 sos_C = np.load(DIR + '\sos_C.npy')
 
 ## Functions:
-# - - - - - - - - - - - - - - - 
+# - - - - - - - - - - - - - - -
 
 def spec(x, nfft=2**12, fs=FS):
     """ Compute the FFT spectrum of the input audio signal 'x'. 
     The number of points for which to compute the FFT can be 
-    specified by 'nfft'. Its possible to select a Hanning or Flattop
-    window, in which case corrections are applied to obtain accurate 
-    measurements based on the spectrum. """
+    specified by 'nfft'. """
     freq = fs/2*np.linspace(0, 1, int(nfft/2)+1)  # FFT frequency vector
     sp = np.fft.rfft(x, nfft)
     spp = np.abs(sp)/nfft
@@ -135,3 +133,19 @@ def filt_A(x):
 def filt_C(x):
     """ Applies the C weighting filter to the input signal 'x' """
     return sosfilt(sos_C, x)
+
+def upp_low_freqs(f_mid, Noct=1.0):
+    """ Returns the upper and lower Noct upper and lower band-edge
+    frequencies according to the given 'f_mid' mid-band frequencies."""
+    return np.around(f_mid*Noct**(-1/(2*Noct)), 5), np.around(f_mid*Noct**(1/(2*Noct)), 5)
+
+def but_pb(low, upp, fs=FS, order=4):
+    """ Returns the coefficients to a second-order-section 
+    Butterworth band-pass filter. The filter is built with 
+    'order' orders and according to the upper and lower 
+    edge-band frequencies ('low' and 'up'). """
+    nyq = 0.5*fs
+    f1 = low/nyq
+    f2 = upp/nyq
+    sos = butter(order, [f1, f2], btype='band', output='sos')
+    return sos
