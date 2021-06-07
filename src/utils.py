@@ -139,13 +139,21 @@ def upp_low_freqs(f_mid, Noct=1.0):
     frequencies according to the given 'f_mid' mid-band frequencies."""
     return np.around(f_mid*Noct**(-1/(2*Noct)), 5), np.around(f_mid*Noct**(1/(2*Noct)), 5)
 
-def but_pb(low, upp, fs=FS, order=4):
+def sos_bp(low, upp, fs=FS, order=4):
     """ Returns the coefficients to a second-order-section 
     Butterworth band-pass filter. The filter is built with 
     'order' orders and according to the upper and lower 
     edge-band frequencies ('low' and 'up'). """
     nyq = 0.5*fs
     f1 = low/nyq
-    f2 = upp/nyq
+    f2 = upp/nyqfr
     sos = butter(order, [f1, f2], btype='band', output='sos')
     return sos
+
+def bp_filt(x, low, upp, fs=FS, order=4):
+    """ Applies a second-order-section band-pass filter 
+    to the input signal 'x'.
+    'low' and 'upp', the upper and lower edge-band frequencies
+    must be specified. """
+    sos = but_pb(low, upp, fs=fs, order=order)
+    return sosfilt(sos, x)
