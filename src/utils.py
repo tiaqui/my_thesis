@@ -15,7 +15,7 @@ DIR = os.path.dirname(os.path.realpath(__file__))
 # - - - - - - - - - - - - - - - 
 
 # sampling frequency [Hz]
-FS = 44100
+FS = 48000
 # reference frequency [Hz]
 FR = 1000
 
@@ -146,7 +146,7 @@ def sos_bp(low, upp, fs=FS, order=4):
     edge-band frequencies ('low' and 'up'). """
     nyq = 0.5*fs
     f1 = low/nyq
-    f2 = upp/nyqfr
+    f2 = upp/nyq
     sos = butter(order, [f1, f2], btype='band', output='sos')
     return sos
 
@@ -155,5 +155,5 @@ def bp_filt(x, low, upp, fs=FS, order=4):
     to the input signal 'x'.
     'low' and 'upp', the upper and lower edge-band frequencies
     must be specified. """
-    sos = but_pb(low, upp, fs=fs, order=order)
+    sos = sos_bp(low, upp, fs=fs, order=order)
     return sosfilt(sos, x)
