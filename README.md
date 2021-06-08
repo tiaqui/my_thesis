@@ -51,6 +51,8 @@ The core code is available in this other repo [RAMON](https://github.com/tiaqui/
 
 3. [**Octave and one-third octave band filters**.](/notebooks/3.%20Octave%20and%20one-third%20octave%20band%20filters.ipynb)
 
+![Notebook 3](/img/notebook_3.png)
+
 ## Requirements
 To run the notebooks the folowing packages are required:
 * `numpy`
