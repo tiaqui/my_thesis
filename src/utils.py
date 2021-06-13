@@ -5,8 +5,10 @@ in the core code developed for the acoustic monitoring station.
 
 import os
 import numpy as np
-from scipy.signal import lfilter, sosfilt
-from scipy.signal import butter
+from scipy.signal import (
+    lfilter, sosfilt, butter, bilinear
+    )
+from scipy.io import wavfile
 
 # Current file directory
 DIR = os.path.dirname(os.path.realpath(__file__))
@@ -47,6 +49,15 @@ sos_C = np.load(DIR + '\sos_C.npy')
 
 ## Functions:
 # - - - - - - - - - - - - - - -
+
+def wavread(x):
+    """ Reads and normalizes the input WAV file 'x' based on its location. """
+    norm_fact = {'int16': (2**15)-1, 'int32': (2**31)-1, 
+                 'int64': (2**63)-1, 'float32': 1.0, 
+                 'float64': 1.0}
+    fs, y = wavfile.read(x)
+    y = np.float32(y)/norm_fact[y.dtype.name]
+    return fs, y
 
 def spec(x, nfft=2**12, fs=FS):
     """ Compute the FFT spectrum of the input audio signal 'x'. 
@@ -157,3 +168,51 @@ def bp_filt(x, low, upp, fs=FS, order=4):
     must be specified. """
     sos = sos_bp(low, upp, fs=fs, order=order)
     return sosfilt(sos, x)
+
+def generate_weighting_filter(t=1.0, fs=FS):
+    """ Generates the coefficients for a second-order-section
+    'Slow' or 'Fast' time-weighting filter, according to the
+    time constant 't' and the sampling frequency 'fs'. """
+    return butter(1, 1/(np.pi*t*fs), output='sos')
+
+def time_weighting(x, which='Slow', fs=FS):
+    """ Applies time-weigthing to the input signal 'x'
+    according to the sampling frequecy 'fs'. 
+    The argument 'which' detemines if 'Slow' (default)
+    or 'Fast' time constants will be applied. """
+    # defining time constant
+    t = 1.0
+    if which == 'Fast':
+        t = 0.125
+    # computing the coefficients
+    sos = generate_weighting_filter(t=t, fs=fs)
+    # appliying the filter
+    return np.sqrt(sosfilt(sos, x**2))
+
+def rms(x):
+    """ RMS level calculatiaon for the input signal 'x'. """
+    return np.sqrt(np.mean(x)**2)
+
+def rms_t(x, t=1.0, fs=FS):
+    """ RMS level calculation for the input signal 'x',
+    in fragments of length 't'.
+    It's expected to recieve a 1-dimension 'x' signal
+    or a 2-dimension 'x' singal with x.shape[0] beign the 
+    amount of frequency bands which the signal is comprised of. 
+    The output will have the same number of dimensions as the input. """
+    x = np.array(x, dtype='float64')
+    N = int(np.floor(t*fs))
+    if x.ndim == 1 :
+        start = np.arange(0, len(x), N) 
+        end = np.append(start[1:], x.shape[0])
+        y= np.empty(len(start))
+        for i in range(len(start)):
+            y[i] = rms(x[start[i]:end[i]])
+    else:
+        start = np.arange(0, x.shape[0], N) 
+        end = np.append(start[1:], x.shape[0])
+        y= np.empty([x.shape[0], len(start)])
+        for i in range(x.shape[0]):
+            for j in range(len(start)):
+                y[i, j] = rms(x[i, start[j]:end[j]])
+    return y
