@@ -54,7 +54,12 @@ The core code is available in this other repo [RAMON](https://github.com/tiaqui/
 ![Notebook 3](/img/notebook_3.png)
 
 4. [**Slow and Fast time weightings**.](/notebooks/4.%20Slow%20and%20Fast%20time%20weightings.ipynb)
+
 ![Notebook 4](/img/notebook_4.png)
+
+5. [**Acoustic measurements**](/notebooks/5.%20Acoustic%20measurements.ipynb)
+
+![Notebook 5](/img/notebook_5.png)
 
 ## Requirements
 To run the notebooks the folowing packages are required:
