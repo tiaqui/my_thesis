@@ -18,7 +18,7 @@ For the audio processing the below block diagram was proposed, in which the focu
 In the notebooks included in this repo we will go over most of the functions and processes neccessary to have a functioning monitoring station.
 
 ##  Digital processing - Code
-The core code is available in this other repo [RAMON](https://github.com/tiaqui/ramon) (in Spanish), in which you can find functionality for:
+The core code is available in dthis other repo [RAMON](https://github.com/tiaqui/ramon) (in Spanish), in which you can find functionality for:
 
 * Obtaining input audio in pre-defined cycles of fixed length.
 * Applying the microphone's inverse filter.
@@ -39,6 +39,10 @@ The core code is available in this other repo [RAMON](https://github.com/tiaqui/
     - L<sub>den</sub> calculation.
     - visualization of the desired values.
     - storing the information in a tabular file (_.xlsx_ for example).
+
+The basic monitoring station's operation can be seen in the image below:
+
+![Monitoring station block diagram](/img/block_diagram.jpg)
 
 ## Notebooks
 1. [**Inverse filtering design and implementation**.](/notebooks/1.%20Inverse%20filter%20design%20and%20implementation.ipynb)
