@@ -140,7 +140,6 @@ def filt_A(x):
     """ Applies the A weighting filter to the input signal 'x' """
     return sosfilt(sos_A, x)
 
-
 def filt_C(x):
     """ Applies the C weighting filter to the input signal 'x' """
     return sosfilt(sos_C, x)
