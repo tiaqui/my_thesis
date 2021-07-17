@@ -215,3 +215,8 @@ def rms_t(x, t=1.0, fs=FS):
             for j in range(len(start)):
                 y[i, j] = rms(x[i, start[j]:end[j]])
     return y
+
+def mean_db(x):
+    """ Get the energetic average of the input array of sound
+    levels in dB'X'. """
+    return 10*np.log10(np.mean(10**(x/10)))
