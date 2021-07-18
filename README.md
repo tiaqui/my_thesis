@@ -42,7 +42,7 @@ The core code is available in dthis other repo [RAMON](https://github.com/tiaqui
 
 The basic monitoring station's operation can be seen in the image below:
 
-![Monitoring station block diagram](/img/block_diagram.jpg)
+![Monitoring station block diagram](/img/block_diagram.png)
 
 ## Notebooks
 1. [**Inverse filtering design and implementation**.](/notebooks/1.%20Inverse%20filter%20design%20and%20implementation.ipynb)
