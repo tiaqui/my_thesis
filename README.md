@@ -70,6 +70,8 @@ To run the notebooks the folowing packages are required:
 * `numpy`
 * `scipy`
 * `matplotlib`
+* `datetime`
+* `pandas`
 * `seaborn`
 * `IPython`
 * `ipywidgets`
